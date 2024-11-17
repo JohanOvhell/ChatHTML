@@ -1,0 +1,93 @@
+
+
+# __CodeGPT - index.html__
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.css">
+    <style id="theme-style"></style>
+</head>
+<body class="light-theme">
+    <div class="container">
+        <header>
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <em>Dark Mode</em>
+            </div>
+            <select id="ai-model">
+                <option value="gpt">ChatGPT</option>
+                <option value="claude">Claude Sonnet</option>
+            </select>
+        </header>
+
+        <main>
+            <div id="chat-container">
+                <!-- Messages will be dynamically inserted here -->
+            </div>
+
+            <div id="image-gallery" class="hidden">
+                <h3>Generated Images</h3>
+                <div id="gallery-grid"></div>
+            </div>
+
+            <div class="input-container">
+                <div class="counters">
+                    <span id="token-counter">Tokens: 0</span>
+                    <span id="word-counter">Words: 0</span>
+                    <span id="cost-calculator">Est. Cost: $0.00</span>
+                </div>
+                
+                <div class="input-wrapper">
+                    <textarea id="user-input" placeholder="Type your message here..."></textarea>
+                    <button id="image-gen-btn" title="Generate Image">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <button id="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <div class="controls">
+                    <button id="clear-chat">Clear Chat</button>
+                    <button id="toggle-scroll">Auto-scroll: ON</button>
+                    <input type="text" id="search-messages" placeholder="Search messages...">
+                </div>
+            </div>
+
+            <div id="loading-indicator" class="hidden">
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <div class="spinner"></div>
+                <span class="estimated-time">Est. time: calculating...</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- External Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    
+    <!-- Local Scripts -->
+    <script src="theme-switcher.js"></script>
+    <script src="message-utils.js"></script>
+    <script src="api-handlers.js"></script>
+    <script src="image-handler.js"></script>
+    <script src="counters.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
