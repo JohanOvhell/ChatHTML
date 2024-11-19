@@ -11,13 +11,13 @@
     <div class="container">
         <header>
             <div class="theme-switch-wrapper">
-                <label class="theme-switch">
-                    <input type="checkbox" id="theme-toggle">
+                <label class="theme-switch" for="theme-toggle">
+                    <input type="checkbox" id="theme-toggle" aria-label="Toggle dark mode">
                     <span class="slider round"></span>
                 </label>
                 <em>Dark Mode</em>
             </div>
-            <select id="ai-model">
+            <select id="ai-model" aria-label="Select AI Model">
                 <option value="gpt">ChatGPT</option>
                 <option value="claude">Claude Sonnet</option>
             </select>
@@ -28,7 +28,7 @@
                 <!-- Messages will be dynamically inserted here -->
             </div>
 
-            <div id="image-gallery" class="hidden">
+            <div id="image-gallery" class="hidden" aria-hidden="true">
                 <h3>Generated Images</h3>
                 <div id="gallery-grid"></div>
             </div>
@@ -42,23 +42,23 @@
                 
                 <div class="input-wrapper">
                     <textarea id="user-input" placeholder="Type your message here..."></textarea>
-                    <button id="image-gen-btn" title="Generate Image">
+                    <button id="image-gen-btn" title="Generate Image" aria-label="Generate Image">
                         <i class="fas fa-image"></i>
                     </button>
-                    <button id="send-btn">
+                    <button id="send-btn" title="Send Message" aria-label="Send Message">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </div>
 
                 <div class="controls">
-                    <button id="clear-chat">Clear Chat</button>
-                    <button id="toggle-scroll">Auto-scroll: ON</button>
-                    <input type="text" id="search-messages" placeholder="Search messages...">
+                    <button id="clear-chat" aria-label="Clear Chat">Clear Chat</button>
+                    <button id="toggle-scroll" aria-label="Toggle Auto-scroll">Auto-scroll: ON</button>
+                    <input type="text" id="search-messages" placeholder="Search messages..." aria-label="Search Messages">
                 </div>
             </div>
 
-            <div id="loading-indicator" class="hidden">
-                <div class="typing-indicator">
+            <div id="loading-indicator" class="hidden" aria-hidden="true">
+                <div class="typing-indicator" aria-label="Loading">
                     <span></span>
                     <span></span>
                     <span></span>
