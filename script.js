@@ -1,9 +1,4 @@
-# __CodeGPT - script.js__
-
-```javascript
-// Main application logic
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize variables
     let autoScroll = true;
     const chatContainer = document.getElementById('chat-container');
     const userInput = document.getElementById('user-input');
@@ -15,10 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiModelSelect = document.getElementById('ai-model');
     const loadingIndicator = document.getElementById('loading-indicator');
 
-    // Load chat history from localStorage
     loadChatHistory();
 
-    // Event Listeners
     sendButton.addEventListener('click', handleSendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -27,29 +20,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    imageGenButton.addEventListener('click', handleImageGeneration);
+    imageGenButton.addEventListener('click', () => handleImageGeneration());
     clearChatButton.addEventListener('click', clearChat);
     toggleScrollButton.addEventListener('click', toggleAutoScroll);
     searchInput.addEventListener('input', handleSearch);
     aiModelSelect.addEventListener('change', handleModelChange);
 
-    // Message handling
     async function handleSendMessage() {
         const message = userInput.value.trim();
         if (!message) return;
 
-        // Check for image generation command
         if (message.startsWith('/image')) {
-            handleImageGeneration(message.substring(7));
+            handleImageCommand(message);
             return;
         }
 
-        // Add user message to chat
         addMessage('user', message);
         userInput.value = '';
         updateCounters('');
 
-        // Show loading indicators
         showLoadingIndicator();
 
         try {
@@ -64,7 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // UI Updates
+    function handleImageCommand(message) {
+        const imageRequest = message.substring(7).trim();
+        console.log('Image generation requested:', imageRequest);
+        // Add image generation logic here
+    }
+
     function showLoadingIndicator() {
         loadingIndicator.classList.remove('hidden');
         startProgressBar();
@@ -85,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveChatHistory();
     }
 
-    // Chat Management
     function clearChat() {
         chatContainer.innerHTML = '';
         localStorage.removeItem('chatHistory');
@@ -100,84 +93,48 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchTerm = searchInput.value.toLowerCase();
         const messages = chatContainer.getElementsByClassName('message');
 
-        Array.from(messages).forEach(message => {
+        Array.from(messages).forEach((message) => {
             const content = message.textContent.toLowerCase();
             message.style.display = content.includes(searchTerm) ? 'block' : 'none';
         });
     }
 
-    function handleModelChange() {
-        // Reset any model-specific UI elements or settings
-        clearActiveContexts();
-    }
-
-    // Progress Bar Animation
-    let progressInterval;
-    function startProgressBar() {
-        const progress = loadingIndicator.querySelector('.progress');
-        let width = 0;
-        
-        progressInterval = setInterval(() => {
-            if (width >= 90) {
-                clearInterval(progressInterval);
-            } else {
-                width++;
-                progress.style.width = width + '%';
-            }
-        }, 100);
-    }
-
-    function stopProgressBar() {
-        clearInterval(progressInterval);
-        const progress = loadingIndicator.querySelector('.progress');
-        progress.style.width = '100%';
-        setTimeout(() => {
-            progress.style.width = '0%';
-        }, 200);
-    }
-
     function updateEstimatedTime() {
         const estimatedTimeSpan = loadingIndicator.querySelector('.estimated-time');
         let seconds = 0;
-        
+
         const timeInterval = setInterval(() => {
             seconds++;
             estimatedTimeSpan.textContent = `Est. time: ${seconds}s`;
-            
-            if (!loadingIndicator.classList.contains('hidden')) {
+            if (loadingIndicator.classList.contains('hidden')) {
                 clearInterval(timeInterval);
             }
         }, 1000);
     }
 
-    // Initialize counters and theme
-    updateCounters('');
-    initializeTheme();
-});
+    function saveChatHistory() {
+        try {
+            const messages = Array.from(chatContainer.children).map((msg) => ({
+                type: msg.classList.contains('user-message') ? 'user' : 'ai',
+                content: msg.querySelector('.message-content').innerHTML,
+                timestamp: msg.querySelector('.message-timestamp').textContent,
+            }));
 
-// Helper Functions
-function clearActiveContexts() {
-    // Reset any active contexts or model-specific states
-    console.log('Clearing active contexts');
-}
-
-function saveChatHistory() {
-    const messages = Array.from(chatContainer.children).map(msg => ({
-        type: msg.classList.contains('user-message') ? 'user' : 'ai',
-        content: msg.querySelector('.message-content').innerHTML,
-        timestamp: msg.querySelector('.message-timestamp').textContent
-    }));
-    
-    localStorage.setItem('chatHistory', JSON.stringify(messages));
-}
-
-function loadChatHistory() {
-    const history = localStorage.getItem('chatHistory');
-    if (history) {
-        const messages = JSON.parse(history);
-        messages.forEach(msg => {
-            addMessage(msg.type, msg.content);
-        });
+            localStorage.setItem('chatHistory', JSON.stringify(messages));
+        } catch (e) {
+            console.error('Failed to save chat history:', e);
+        }
     }
-}
-```
+
+    function loadChatHistory() {
+        try {
+            const history = localStorage.getItem('chatHistory');
+            if (history) {
+                const messages = JSON.parse(history);
+                messages.forEach((msg) => addMessage(msg.type, msg.content));
+            }
+        } catch (e) {
+            console.error('Failed to load chat history:', e);
+        }
+    }
+});
